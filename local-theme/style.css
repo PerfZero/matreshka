@@ -600,40 +600,18 @@ body {
 .author-profile__content {
     display: grid;
     grid-template-columns: 290px 1fr;
-    gap: 24px;
+    gap: 84px;
     align-items: stretch;
 }
 
 .author-profile__card {
-    background: #f7f7f7;
+    background: url("./assets/img/back.webp");
+    background-repeat: no-repeat;
     border-radius: 28px;
-    padding: 24px 20px 28px;
+    padding: 40px;
+    height: 480px;
     position: relative;
     overflow: hidden;
-}
-
-.author-profile__card::before,
-.author-profile__card::after {
-    content: "";
-    position: absolute;
-    border-radius: 999px;
-    z-index: 0;
-}
-
-.author-profile__card::before {
-    width: 170px;
-    height: 170px;
-    background: #f9c74c;
-    right: -84px;
-    top: -80px;
-}
-
-.author-profile__card::after {
-    width: 190px;
-    height: 190px;
-    background: rgba(106, 92, 234, 0.08);
-    left: -92px;
-    top: 210px;
 }
 
 .author-profile__avatar-wrap,
@@ -679,7 +657,7 @@ body {
 }
 
 .author-profile__meta-title {
-    font-size: 42px;
+    font-size: 18px;
     line-height: 1.05;
     font-weight: 500;
     color: #222;
@@ -706,7 +684,7 @@ body {
 }
 
 .author-profile__heading {
-    font-size: 52px;
+    font-size: 24px;
     line-height: 1.1;
     font-weight: 500;
     color: #352e75;
@@ -714,7 +692,11 @@ body {
 
 .author-profile__posts-card {
     min-height: 100%;
-    background: #f7f7f7;
+    background: url("./assets/img/back_1.png");
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    background-color: #fff;
+
     border-radius: 28px;
     padding: 26px 28px;
     position: relative;
@@ -722,31 +704,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 26px;
-}
-
-.author-profile__posts-card::before,
-.author-profile__posts-card::after {
-    content: "";
-    position: absolute;
-    border-radius: 999px;
-    pointer-events: none;
-}
-
-.author-profile__posts-card::before {
-    width: 270px;
-    height: 270px;
-    right: -134px;
-    bottom: -146px;
-    background: #f9c74c;
-}
-
-.author-profile__posts-card::after {
-    width: 220px;
-    height: 220px;
-    right: -110px;
-    bottom: -96px;
-    border: 3px solid #8b76ff;
-    background: transparent;
 }
 
 .author-profile__posts-list {
