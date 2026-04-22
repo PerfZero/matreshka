@@ -411,6 +411,133 @@ body {
     max-width: 1106px;
     margin: 0 auto;
     padding: 30px 0 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.home-hero {
+    width: 100%;
+}
+
+.home-hero__card {
+    background:
+        url("./assets/img/home-hero-bg.webp") center center / cover no-repeat,
+        #f7f7f7;
+    border-radius: 28px;
+    min-height: 520px;
+    position: relative;
+    overflow: hidden;
+}
+
+.home-hero__content {
+    max-width: 540px;
+    padding: 32px 34px 116px;
+}
+
+.home-hero__spark {
+    color: #6a5cea;
+    font-size: 34px;
+    line-height: 1;
+    display: inline-block;
+    margin-left: 78px;
+    margin-bottom: 10px;
+}
+
+.home-hero__title {
+    color: #34295e;
+    font-family: "Russo One", "Montserrat", sans-serif;
+    text-transform: uppercase;
+    font-size: 76px;
+    line-height: 0.98;
+    letter-spacing: 0.01em;
+    margin: 0 0 46px;
+}
+
+.home-hero__subtitle {
+    color: #3f3781;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.1;
+    margin: 0 0 18px;
+}
+
+.home-hero__text {
+    color: #1f1f1f;
+    font-size: 20px;
+    line-height: 1.35;
+    font-weight: 500;
+    margin: 0 0 34px;
+}
+
+.home-hero__cta {
+    width: 216px;
+    height: 216px;
+    border-radius: 50%;
+    background:
+        linear-gradient(130deg, #2f7046 8%, #367847 60%, #88b6a0 70%, #2f7046 86%);
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 41px;
+    line-height: 1.06;
+    font-weight: 400;
+    letter-spacing: 0.015em;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: transform 0.2s ease;
+}
+
+.home-hero__cta:hover {
+    transform: translateY(-2px);
+}
+
+.home-hero__cities {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 13px 0;
+    background: rgba(223, 223, 223, 0.76);
+    backdrop-filter: blur(1px);
+}
+
+.home-hero__cities-track {
+    display: flex;
+    width: max-content;
+    gap: 22px;
+    align-items: center;
+    animation: home-hero-marquee 26s linear infinite;
+}
+
+.home-hero__cities-track span {
+    color: #9f9f9f;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.home-hero__cities-track span::after {
+    content: "•";
+    margin-left: 22px;
+}
+
+.home-hero__aftertext {
+    color: #202020;
+    font-size: 16px;
+    line-height: 1.42;
+}
+
+@keyframes home-hero-marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
 }
 
 .authors-stories {
@@ -832,6 +959,43 @@ body {
         padding: 14px 10px 34px;
     }
 
+    .home-hero__card {
+        min-height: 430px;
+        border-radius: 24px;
+        background-position: 64% 50%;
+    }
+
+    .home-hero__content {
+        max-width: 100%;
+        padding: 24px 22px 90px;
+    }
+
+    .home-hero__spark {
+        margin-left: 0;
+        font-size: 28px;
+    }
+
+    .home-hero__title {
+        font-size: clamp(38px, 7.1vw, 66px);
+        margin-bottom: 28px;
+    }
+
+    .home-hero__subtitle {
+        font-size: clamp(20px, 3.6vw, 30px);
+    }
+
+    .home-hero__text {
+        max-width: 520px;
+        font-size: clamp(17px, 3vw, 24px);
+        margin-bottom: 22px;
+    }
+
+    .home-hero__cta {
+        width: 170px;
+        height: 170px;
+        font-size: 30px;
+    }
+
     .authors-stories__head {
         margin-bottom: 14px;
     }
@@ -972,6 +1136,51 @@ body {
 
     .authors-stories__head {
         align-items: flex-end;
+    }
+
+    .home-hero__card {
+        min-height: 360px;
+        background-position: 70% 50%;
+    }
+
+    .home-hero__content {
+        padding: 18px 16px 74px;
+    }
+
+    .home-hero__title {
+        font-size: clamp(30px, 10.5vw, 42px);
+        margin-bottom: 18px;
+        max-width: 78%;
+    }
+
+    .home-hero__subtitle {
+        font-size: 17px;
+        margin-bottom: 10px;
+    }
+
+    .home-hero__text {
+        font-size: 15px;
+        max-width: 78%;
+        margin-bottom: 14px;
+    }
+
+    .home-hero__cta {
+        width: 118px;
+        height: 118px;
+        font-size: 19px;
+        gap: 2px;
+    }
+
+    .home-hero__cities {
+        padding: 9px 0;
+    }
+
+    .home-hero__cities-track span {
+        font-size: 13px;
+    }
+
+    .home-hero__aftertext {
+        font-size: 14px;
     }
 
     .authors-stories__all-link {

@@ -32,7 +32,7 @@ function local_theme_assets(): void
 
     wp_enqueue_style(
         'local-theme-fonts',
-        'https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Montserrat:wght@400;500;600;700&display=swap',
+        'https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Montserrat:wght@400;500;600;700&family=Russo+One&display=swap',
         array(),
         null
     );
