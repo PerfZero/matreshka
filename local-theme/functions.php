@@ -380,6 +380,71 @@ function local_theme_user_avatar_profile_field(WP_User $user): void
                     <?php wp_nonce_field('local_theme_save_user_avatar', 'local_theme_user_avatar_nonce'); ?>
                 </td>
             </tr>
+            <tr>
+                <th><label for="local_theme_author_status">Статус автора</label></th>
+                <td>
+                    <input
+                        type="text"
+                        id="local_theme_author_status"
+                        name="local_theme_author_status"
+                        value="<?php echo esc_attr((string) get_user_meta($user->ID, 'local_theme_author_status', true)); ?>"
+                        class="regular-text"
+                    >
+                    <p class="description">Пример: Начальный, Продвинутый.</p>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="local_theme_author_age">Возраст</label></th>
+                <td>
+                    <input
+                        type="number"
+                        id="local_theme_author_age"
+                        name="local_theme_author_age"
+                        min="0"
+                        max="120"
+                        value="<?php echo esc_attr((string) get_user_meta($user->ID, 'local_theme_author_age', true)); ?>"
+                        class="small-text"
+                    >
+                </td>
+            </tr>
+            <tr>
+                <th><label for="local_theme_author_city">Город</label></th>
+                <td>
+                    <input
+                        type="text"
+                        id="local_theme_author_city"
+                        name="local_theme_author_city"
+                        value="<?php echo esc_attr((string) get_user_meta($user->ID, 'local_theme_author_city', true)); ?>"
+                        class="regular-text"
+                    >
+                </td>
+            </tr>
+            <tr>
+                <th><label for="local_theme_author_hobbies">Увлечения</label></th>
+                <td>
+                    <textarea
+                        id="local_theme_author_hobbies"
+                        name="local_theme_author_hobbies"
+                        rows="3"
+                        class="large-text"
+                    ><?php echo esc_textarea((string) get_user_meta($user->ID, 'local_theme_author_hobbies', true)); ?></textarea>
+                    <p class="description">Любой текст. Можно через запятую или строками.</p>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="local_theme_author_contact_link">Ссылка «Написать автору»</label></th>
+                <td>
+                    <input
+                        type="url"
+                        id="local_theme_author_contact_link"
+                        name="local_theme_author_contact_link"
+                        value="<?php echo esc_attr((string) get_user_meta($user->ID, 'local_theme_author_contact_link', true)); ?>"
+                        class="regular-text"
+                        placeholder="https://t.me/username"
+                    >
+                    <p class="description">Если пусто, будет использован email автора.</p>
+                </td>
+            </tr>
         </tbody>
     </table>
     <?php
@@ -411,6 +476,42 @@ function local_theme_save_user_avatar(int $user_id): void
         update_user_meta($user_id, local_theme_user_avatar_meta_key(), $avatar_id);
     } else {
         delete_user_meta($user_id, local_theme_user_avatar_meta_key());
+    }
+
+    $status = isset($_POST['local_theme_author_status']) ? sanitize_text_field(wp_unslash($_POST['local_theme_author_status'])) : '';
+    $age = isset($_POST['local_theme_author_age']) ? absint(wp_unslash($_POST['local_theme_author_age'])) : 0;
+    $city = isset($_POST['local_theme_author_city']) ? sanitize_text_field(wp_unslash($_POST['local_theme_author_city'])) : '';
+    $hobbies = isset($_POST['local_theme_author_hobbies']) ? sanitize_textarea_field(wp_unslash($_POST['local_theme_author_hobbies'])) : '';
+    $contact_link = isset($_POST['local_theme_author_contact_link']) ? esc_url_raw(wp_unslash($_POST['local_theme_author_contact_link'])) : '';
+
+    if ('' !== $status) {
+        update_user_meta($user_id, 'local_theme_author_status', $status);
+    } else {
+        delete_user_meta($user_id, 'local_theme_author_status');
+    }
+
+    if ($age > 0) {
+        update_user_meta($user_id, 'local_theme_author_age', (string) $age);
+    } else {
+        delete_user_meta($user_id, 'local_theme_author_age');
+    }
+
+    if ('' !== $city) {
+        update_user_meta($user_id, 'local_theme_author_city', $city);
+    } else {
+        delete_user_meta($user_id, 'local_theme_author_city');
+    }
+
+    if ('' !== $hobbies) {
+        update_user_meta($user_id, 'local_theme_author_hobbies', $hobbies);
+    } else {
+        delete_user_meta($user_id, 'local_theme_author_hobbies');
+    }
+
+    if ('' !== $contact_link) {
+        update_user_meta($user_id, 'local_theme_author_contact_link', $contact_link);
+    } else {
+        delete_user_meta($user_id, 'local_theme_author_contact_link');
     }
 }
 add_action('personal_options_update', 'local_theme_save_user_avatar');
@@ -500,3 +601,68 @@ function local_theme_pre_get_avatar_data(array $args, $id_or_email): array
     return $args;
 }
 add_filter('pre_get_avatar_data', 'local_theme_pre_get_avatar_data', 10, 2);
+
+/**
+ * Get public author display name.
+ */
+function local_theme_get_author_public_name(int $user_id): string
+{
+    $user = get_user_by('ID', $user_id);
+    if (!$user instanceof WP_User) {
+        return '';
+    }
+
+    $first_name = trim((string) get_user_meta($user_id, 'first_name', true));
+    $last_name = trim((string) get_user_meta($user_id, 'last_name', true));
+    $nickname = trim((string) get_user_meta($user_id, 'nickname', true));
+    $display_name = trim((string) $user->display_name);
+    $full_name = trim($first_name . ' ' . $last_name);
+
+    if ('' !== $full_name) {
+        return $full_name;
+    }
+
+    if ('' !== $nickname && !is_email($nickname)) {
+        return $nickname;
+    }
+
+    if ('' !== $display_name && !is_email($display_name)) {
+        return $display_name;
+    }
+
+    return (string) $user->user_login;
+}
+
+/**
+ * Get avatar URL for author.
+ */
+function local_theme_get_author_avatar_url(int $user_id, int $size = 160): string
+{
+    $avatar_data = get_avatar_data($user_id, array(
+        'size' => $size,
+        'default' => '404',
+    ));
+
+    if (!empty($avatar_data['found_avatar']) && !empty($avatar_data['url'])) {
+        return (string) $avatar_data['url'];
+    }
+
+    return '';
+}
+
+/**
+ * Get users for "Истории авторов" block.
+ *
+ * @return array<int, WP_User>
+ */
+function local_theme_get_story_authors(int $limit = 20): array
+{
+    $users = get_users(array(
+        'role__in' => array('matre_author', 'author'),
+        'orderby' => 'display_name',
+        'order' => 'ASC',
+        'number' => $limit,
+    ));
+
+    return is_array($users) ? $users : array();
+}

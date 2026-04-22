@@ -541,6 +541,10 @@ body {
     gap: 16px;
 }
 
+.author-story__link--active .author-story__avatar-ring {
+    box-shadow: 0 0 0 3px rgba(106, 92, 234, 0.22);
+}
+
 .author-story__avatar-ring {
     width: 88px;
     height: 88px;
@@ -585,6 +589,233 @@ body {
     font-size: 15px;
     line-height: 1.4;
     padding: 10px 0;
+}
+
+.author-page {
+    display: flex;
+    flex-direction: column;
+    gap: 42px;
+}
+
+.author-profile__content {
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    gap: 24px;
+    align-items: stretch;
+}
+
+.author-profile__card {
+    background: #f7f7f7;
+    border-radius: 28px;
+    padding: 24px 20px 28px;
+    position: relative;
+    overflow: hidden;
+}
+
+.author-profile__card::before,
+.author-profile__card::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    z-index: 0;
+}
+
+.author-profile__card::before {
+    width: 170px;
+    height: 170px;
+    background: #f9c74c;
+    right: -84px;
+    top: -80px;
+}
+
+.author-profile__card::after {
+    width: 190px;
+    height: 190px;
+    background: rgba(106, 92, 234, 0.08);
+    left: -92px;
+    top: 210px;
+}
+
+.author-profile__avatar-wrap,
+.author-profile__status,
+.author-profile__meta-block {
+    position: relative;
+    z-index: 1;
+}
+
+.author-profile__avatar-wrap {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    margin-bottom: 20px;
+}
+
+.author-profile__avatar,
+.author-profile__avatar-fallback {
+    width: 196px;
+    height: 196px;
+    border-radius: 50%;
+}
+
+.author-profile__avatar {
+    object-fit: cover;
+    display: block;
+}
+
+.author-profile__avatar-fallback {
+    display: grid;
+    place-items: center;
+    background: #f6f1e8;
+    color: #352e75;
+    font-size: 72px;
+    font-weight: 700;
+}
+
+.author-profile__status {
+    font-size: 18px;
+    line-height: 1.3;
+    color: #2f73e8;
+    margin-bottom: 28px;
+}
+
+.author-profile__meta-title {
+    font-size: 42px;
+    line-height: 1.05;
+    font-weight: 500;
+    color: #222;
+    margin-bottom: 16px;
+}
+
+.author-profile__meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.author-profile__meta-list li,
+.author-profile__meta-empty {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #222;
+}
+
+.author-profile__main {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.author-profile__heading {
+    font-size: 52px;
+    line-height: 1.1;
+    font-weight: 500;
+    color: #352e75;
+}
+
+.author-profile__posts-card {
+    min-height: 100%;
+    background: #f7f7f7;
+    border-radius: 28px;
+    padding: 26px 28px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+}
+
+.author-profile__posts-card::before,
+.author-profile__posts-card::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
+}
+
+.author-profile__posts-card::before {
+    width: 270px;
+    height: 270px;
+    right: -134px;
+    bottom: -146px;
+    background: #f9c74c;
+}
+
+.author-profile__posts-card::after {
+    width: 220px;
+    height: 220px;
+    right: -110px;
+    bottom: -96px;
+    border: 3px solid #8b76ff;
+    background: transparent;
+}
+
+.author-profile__posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: relative;
+    z-index: 1;
+}
+
+.author-profile__post-item a {
+    color: #1d1d1d;
+    font-size: 20px;
+    line-height: 1.35;
+}
+
+.author-profile__post-item a:hover {
+    color: #6a5cea;
+}
+
+.author-profile__posts-empty {
+    color: #4b4b4b;
+    font-size: 17px;
+    line-height: 1.4;
+    position: relative;
+    z-index: 1;
+}
+
+.author-profile__contact-wrap {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.author-profile__contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 58px;
+    padding: 0 26px 0 0;
+    border: 3px solid transparent;
+    border-radius: 100px 90px 90px 100px;
+    background:
+        linear-gradient(#f7f7f7, #f7f7f7) padding-box,
+        linear-gradient(90deg, #eeb95f 0%, #6a5cea 100%) border-box;
+}
+
+.author-profile__contact-circle {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: 3px dashed #138a2f;
+    background: #fff;
+    color: #151515;
+    font-size: 40px;
+    line-height: 0.8;
+    display: grid;
+    place-items: center;
+    position: relative;
+    left: -4px;
+}
+
+.author-profile__contact-text {
+    color: #222;
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: 500;
 }
 
 @media (max-width: 1100px) {
@@ -649,10 +880,11 @@ body {
     }
 
     .authors-stories__card {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 24px;
         padding: 20px;
         border-radius: 30px;
+        align-items: stretch;
     }
 
     .authors-stories__cta {
@@ -682,6 +914,41 @@ body {
     .author-story__avatar-ring {
         width: 88px;
         height: 88px;
+    }
+
+    .author-page {
+        gap: 28px;
+    }
+
+    .author-profile__content {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .author-profile__card {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 16px;
+        align-items: center;
+        padding: 18px;
+    }
+
+    .author-profile__avatar,
+    .author-profile__avatar-fallback {
+        width: 150px;
+        height: 150px;
+    }
+
+    .author-profile__heading {
+        font-size: 36px;
+    }
+
+    .author-profile__meta-title {
+        font-size: 30px;
+    }
+
+    .author-profile__post-item a {
+        font-size: 18px;
     }
 }
 
@@ -773,6 +1040,49 @@ body {
     }
 
     .author-story__name {
+        font-size: 15px;
+    }
+
+    .author-profile__card {
+        grid-template-columns: 1fr;
+        justify-items: start;
+    }
+
+    .author-profile__avatar-wrap {
+        width: 100%;
+        justify-items: start;
+    }
+
+    .author-profile__heading {
+        font-size: 28px;
+        line-height: 1.15;
+    }
+
+    .author-profile__meta-title {
+        font-size: 24px;
+    }
+
+    .author-profile__posts-card {
+        padding: 18px;
+        border-radius: 22px;
+    }
+
+    .author-profile__post-item a {
+        font-size: 17px;
+    }
+
+    .author-profile__contact-btn {
+        min-height: 52px;
+        padding-right: 20px;
+    }
+
+    .author-profile__contact-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 34px;
+    }
+
+    .author-profile__contact-text {
         font-size: 15px;
     }
 }
