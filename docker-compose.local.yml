@@ -1,0 +1,38 @@
+services:
+  db:
+    image: mariadb:11.4
+    container_name: matre-local-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wp_local
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  wordpress:
+    image: wordpress:php8.3-apache
+    container_name: matre-local-wp
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_pass
+      WORDPRESS_DB_NAME: wp_local
+    ports:
+      - "8090:80"
+    volumes:
+      - ./local-theme:/var/www/html/wp-content/themes/local-theme
+      - ./mu-plugins:/var/www/html/wp-content/mu-plugins
+
+volumes:
+  db_data:

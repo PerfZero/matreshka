@@ -1,0 +1,57 @@
+Matrezhka News API Docs
+Date: 2026-04-22
+Base URL: https://news.matrezhka.ru/wp-json
+
+1) JWT token (login)
+POST /jwt-auth/v1/token
+Full URL: https://news.matrezhka.ru/wp-json/jwt-auth/v1/token
+Content-Type: application/json
+Body:
+{
+  "username": "<login_or_email>",
+  "password": "<password>"
+}
+
+Expected response fields:
+- token
+- user_email
+- user_nicename
+- user_display_name
+- roles  (added by project MU plugin)
+
+2) Cities taxonomy
+GET /wp/v2/city
+Full URL: https://news.matrezhka.ru/wp-json/wp/v2/city
+Example:
+GET https://news.matrezhka.ru/wp-json/wp/v2/city?per_page=100&page=1
+
+3) Posts with ACF fields
+GET /wp/v2/posts
+Full URL: https://news.matrezhka.ru/wp-json/wp/v2/posts
+Example:
+GET https://news.matrezhka.ru/wp-json/wp/v2/posts?per_page=10&page=1&_embed=1
+
+ACF fields in post response (acf):
+- city (taxonomy term id)
+- editor_pick (boolean)
+- breaking_news (boolean)
+- editor_notes (string)
+
+4) Custom ads endpoint
+GET /matrezhka/v1/ads
+Full URL: https://news.matrezhka.ru/wp-json/matrezhka/v1/ads
+Example response:
+[
+  {
+    "id": 1,
+    "type": "banner",
+    "content": "<img ... />",
+    "position": "header",
+    "active": true
+  }
+]
+
+5) Quick health checks
+- https://news.matrezhka.ru/wp-json/wp/v2/city
+- https://news.matrezhka.ru/wp-json/matrezhka/v1/ads
+- POST https://news.matrezhka.ru/wp-json/jwt-auth/v1/token
