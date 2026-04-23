@@ -431,7 +431,7 @@ body {
 }
 
 .home-hero__content {
-    max-width: 540px;
+    max-width: 100%;
     padding: 32px 34px 116px;
 }
 
@@ -448,7 +448,7 @@ body {
     color: #34295e;
     font-family: "Russo One", "Montserrat", sans-serif;
     text-transform: uppercase;
-    font-size: 76px;
+    font-size: 48px;
     line-height: 0.98;
     letter-spacing: 0.01em;
     margin: 0 0 46px;
@@ -471,14 +471,19 @@ body {
 }
 
 .home-hero__cta {
-    width: 216px;
-    height: 216px;
+    width: 133px;
+    height: 133px;
     border-radius: 50%;
-    background:
-        linear-gradient(130deg, #2f7046 8%, #367847 60%, #88b6a0 70%, #2f7046 86%);
+    background: linear-gradient(
+        130deg,
+        #2f7046 8%,
+        #367847 60%,
+        #88b6a0 70%,
+        #2f7046 86%
+    );
     color: #ffffff;
     text-transform: uppercase;
-    font-size: 41px;
+    font-size: 16px;
     line-height: 1.06;
     font-weight: 400;
     letter-spacing: 0.015em;
@@ -514,7 +519,7 @@ body {
 
 .home-hero__cities-track span {
     color: #9f9f9f;
-    font-size: 16px;
+    font-size: 24px;
     line-height: 1;
     font-weight: 700;
     white-space: nowrap;
@@ -527,7 +532,7 @@ body {
 
 .home-hero__aftertext {
     color: #202020;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.42;
 }
 
