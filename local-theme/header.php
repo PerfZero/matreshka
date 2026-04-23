@@ -8,31 +8,9 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <?php
-$rubric_categories = get_categories(array(
-    'taxonomy' => 'category',
-    'hide_empty' => false,
-    'orderby' => 'name',
-    'order' => 'ASC',
-));
-
-if (!empty($rubric_categories)) {
-    usort($rubric_categories, function ($a, $b) {
-        $meta_key = function_exists('local_theme_category_menu_order_meta_key')
-            ? local_theme_category_menu_order_meta_key()
-            : 'local_theme_category_menu_order';
-        $a_order = get_term_meta((int) $a->term_id, $meta_key, true);
-        $b_order = get_term_meta((int) $b->term_id, $meta_key, true);
-
-        $a_rank = '' === (string) $a_order ? 9999 : absint((string) $a_order);
-        $b_rank = '' === (string) $b_order ? 9999 : absint((string) $b_order);
-
-        if ($a_rank === $b_rank) {
-            return strcmp($a->name, $b->name);
-        }
-
-        return $a_rank <=> $b_rank;
-    });
-}
+$rubric_categories = function_exists('local_theme_get_sorted_rubric_categories')
+    ? local_theme_get_sorted_rubric_categories()
+    : array();
 ?>
 <header class="site-header">
   <div class="site-header__inner">
@@ -66,9 +44,6 @@ if (!empty($rubric_categories)) {
             <div class="ms-column__item--submenu">
               <?php foreach ($rubric_categories as $index => $category) : ?>
                 <?php
-                if ('uncategorized' === $category->slug) {
-                    continue;
-                }
                 $category_link = get_category_link($category->term_id);
                 $category_icon = function_exists('local_theme_get_category_icon_url')
                     ? local_theme_get_category_icon_url((int) $category->term_id, 'thumbnail')

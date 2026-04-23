@@ -666,3 +666,70 @@ function local_theme_get_story_authors(int $limit = 20): array
 
     return is_array($users) ? $users : array();
 }
+
+/**
+ * Get categories sorted by custom menu order meta.
+ *
+ * @return array<int, WP_Term>
+ */
+function local_theme_get_sorted_rubric_categories(): array
+{
+    $categories = get_categories(array(
+        'taxonomy' => 'category',
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC',
+    ));
+
+    if (!is_array($categories)) {
+        return array();
+    }
+
+    $meta_key = function_exists('local_theme_category_menu_order_meta_key')
+        ? local_theme_category_menu_order_meta_key()
+        : 'local_theme_category_menu_order';
+
+    usort($categories, function ($a, $b) use ($meta_key) {
+        $a_order = get_term_meta((int) $a->term_id, $meta_key, true);
+        $b_order = get_term_meta((int) $b->term_id, $meta_key, true);
+
+        $a_rank = '' === (string) $a_order ? 9999 : absint((string) $a_order);
+        $b_rank = '' === (string) $b_order ? 9999 : absint((string) $b_order);
+
+        if ($a_rank === $b_rank) {
+            return strcmp((string) $a->name, (string) $b->name);
+        }
+
+        return $a_rank <=> $b_rank;
+    });
+
+    return array_values(array_filter($categories, function ($category) {
+        return isset($category->slug) && 'uncategorized' !== (string) $category->slug;
+    }));
+}
+
+/**
+ * Get city terms for city selector block.
+ *
+ * @return array<int, WP_Term>
+ */
+function local_theme_get_city_terms(): array
+{
+    if (!taxonomy_exists('city')) {
+        return array();
+    }
+
+    $terms = get_terms(array(
+        'taxonomy' => 'city',
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC',
+        'number' => 0,
+    ));
+
+    if (is_wp_error($terms) || !is_array($terms)) {
+        return array();
+    }
+
+    return $terms;
+}
