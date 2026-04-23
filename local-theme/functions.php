@@ -47,10 +47,15 @@ function local_theme_assets(): void
     wp_enqueue_script(
         'local-theme-ui',
         get_template_directory_uri() . '/theme.js',
-        array(),
+        array('masonry', 'imagesloaded'),
         $script_version,
         true
     );
+
+    wp_localize_script('local-theme-ui', 'localThemeAjax', array(
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce'   => wp_create_nonce('local_theme_posts_filter'),
+    ));
 }
 add_action('wp_enqueue_scripts', 'local_theme_assets');
 
@@ -732,4 +737,96 @@ function local_theme_get_city_terms(): array
     }
 
     return $terms;
+}
+
+/**
+ * AJAX: filter posts by category for the masonry grid.
+ */
+function local_theme_filter_posts_ajax(): void
+{
+    check_ajax_referer('local_theme_posts_filter', 'nonce');
+
+    $category_id = isset($_POST['category_id']) ? absint($_POST['category_id']) : 0;
+    $page        = isset($_POST['page'])        ? max(1, absint($_POST['page'])) : 1;
+    $per_page    = (int) get_option('posts_per_page', 8);
+
+    $args = array(
+        'posts_per_page'      => $per_page,
+        'paged'               => $page,
+        'post_status'         => 'publish',
+        'orderby'             => 'date',
+        'order'               => 'DESC',
+        'ignore_sticky_posts' => true,
+    );
+
+    if ($category_id > 0) {
+        $args['cat'] = $category_id;
+    }
+
+    $q = new WP_Query($args);
+
+    ob_start();
+    if ($q->have_posts()) {
+        while ($q->have_posts()) {
+            $q->the_post();
+            get_template_part('template-parts/post-card');
+        }
+        wp_reset_postdata();
+    } elseif (1 === $page) {
+        echo '<p class="posts-masonry__empty">Записей не найдено.</p>';
+    }
+    $html = ob_get_clean();
+
+    wp_send_json_success(array(
+        'html'     => $html,
+        'has_more' => $page < (int) $q->max_num_pages,
+    ));
+}
+add_action('wp_ajax_local_theme_filter_posts', 'local_theme_filter_posts_ajax');
+add_action('wp_ajax_nopriv_local_theme_filter_posts', 'local_theme_filter_posts_ajax');
+
+/**
+ * Format post date as human-readable Russian string.
+ */
+function local_theme_format_post_time(int $post_id): string
+{
+    $timestamp      = (int) get_the_time('U', $post_id);
+    $now            = (int) current_time('timestamp');
+    $diff           = max(0, $now - $timestamp);
+    $today_start    = (int) strtotime('today midnight', $now);
+    $yesterday_start = (int) strtotime('yesterday midnight', $now);
+
+    if ($timestamp >= $today_start) {
+        $hours = (int) floor($diff / 3600);
+        if ($hours < 1) {
+            $mins = max(1, (int) floor($diff / 60));
+            return 'Сегодня, ' . $mins . ' ' . local_theme_plural_ru($mins, 'мин.', 'мин.', 'мин.') . ' назад';
+        }
+        return 'Сегодня, ' . $hours . ' ' . local_theme_plural_ru($hours, 'час', 'часа', 'часов') . ' назад';
+    }
+
+    if ($timestamp >= $yesterday_start) {
+        return 'Вчера';
+    }
+
+    return get_the_date('d.m.Y', $post_id);
+}
+
+/**
+ * Russian plural form helper.
+ */
+function local_theme_plural_ru(int $n, string $one, string $two, string $five): string
+{
+    $n  = abs($n) % 100;
+    $n1 = $n % 10;
+    if ($n > 10 && $n < 20) {
+        return $five;
+    }
+    if ($n1 > 1 && $n1 < 5) {
+        return $two;
+    }
+    if (1 === $n1) {
+        return $one;
+    }
+    return $five;
 }
