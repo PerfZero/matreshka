@@ -14,7 +14,7 @@ $current_author_id = isset($args['current_author_id']) ? (int) $args['current_au
 <section class="authors-stories" aria-labelledby="authors-stories-title">
   <div class="authors-stories__head">
     <h2 id="authors-stories-title" class="authors-stories__title">Истории авторов</h2>
-    <a class="authors-stories__all-link" href="#">Смотреть всех авторов</a>
+    <a class="authors-stories__all-link" href="<?php echo esc_url(home_url('/authors/')); ?>">Смотреть всех авторов</a>
   </div>
 
   <div class="authors-stories__card">
